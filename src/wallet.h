@@ -167,7 +167,7 @@ public:
      */
     TxItems OrderedTxItems(std::list<CAccountingEntry>& acentries, std::string strAccount = "");
 
-    void MarkDirty();
+    void Markkeebler();
     bool AddToWallet(const CWalletTx& wtxIn);
     bool AddToWalletIfInvolvingMe(const uint256 &hash, const CTransaction& tx, const CBlock* pblock, bool fUpdate = false, bool fFindBlock = false);
     bool EraseFromWallet(uint256 hash);
@@ -515,7 +515,7 @@ public:
     }
 
     // make sure balances are recalculated
-    void MarkDirty()
+    void Markkeebler()
     {
         fCreditCached = false;
         fAvailableCreditCached = false;
@@ -526,7 +526,7 @@ public:
     void BindWallet(CWallet *pwalletIn)
     {
         pwallet = pwalletIn;
-        MarkDirty();
+        Markkeebler();
     }
 
     void MarkSpent(unsigned int nOut)

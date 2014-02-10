@@ -11,13 +11,12 @@ packages:
 - "nsis"
 - "faketime"
 reference_datetime: "2011-01-30 00:00:00"
-remotes:
-- "url": "https://github.com/coingen/premine.git"
-  "dir": "premine"
+remotes: []
 files:
 - "qt-win32-4.8.3-gitian-r1.zip"
 - "boost-win32-1.50.0-gitian2.zip"
 - "premine-deps-0.0.5.zip"
+- "premine.zip"
 script: |
   #
   mkdir $HOME/qt
@@ -43,7 +42,12 @@ script: |
   #
   find -type f | xargs touch --date="$REFERENCE_DATETIME"
   #
+  unzip premine.zip
   cd premine
+  cd src/leveldb
+  chmod 755 build_detect_platform
+  cd ..
+  cd ..
   mkdir -p $OUTDIR/src
   git archive HEAD | tar -x -C $OUTDIR/src
   cp $OUTDIR/src/doc/README_windows.txt $OUTDIR/readme.txt

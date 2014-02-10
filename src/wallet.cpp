@@ -359,12 +359,12 @@ void CWallet::WalletUpdateSpent(const CTransaction &tx)
     }
 }
 
-void CWallet::MarkDirty()
+void CWallet::Markkeebler()
 {
     {
         LOCK(cs_wallet);
         BOOST_FOREACH(PAIRTYPE(const uint256, CWalletTx)& item, mapWallet)
-            item.second.MarkDirty();
+            item.second.Markkeebler();
     }
 }
 
@@ -824,7 +824,7 @@ void CWallet::ReacceptWalletTransactions()
                 if (fUpdated)
                 {
                     printf("ReacceptWalletTransactions found spent coin %sbc %s\n", FormatMoney(wtx.GetCredit()).c_str(), wtx.GetHash().ToString().c_str());
-                    wtx.MarkDirty();
+                    wtx.Markkeebler();
                     wtx.WriteToDisk();
                 }
             }

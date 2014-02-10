@@ -1073,17 +1073,23 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 1 * COIN;
+    int64 nSubsidy = 1000 * COIN;
 
-    // Subsidy is cut in half every 250000 blocks, which will occur approximately every 4 years
-    nSubsidy >>= (nHeight / 250000);
-
+    // Subsidy is cut in half every 250 blocks
+    nSubsidy >>= (nHeight / 250);
+	//axe subsidy alltogether after block 15999 to prevent bad maths
+	    if(nHeight >= 15999)
+            nSubsidy = 0 * COIN;
+	//end fix
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-static const int64 nTargetSpacing = 10 * 60;
+static const int64 nTargetTimespan = 1 * 24 * 60 * 60; // one day
+static const int64 nTargetSpacing = 10 * 6;
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
+
+//fork
+static const int nDifficultyFork = 15999;
 
 //
 // minimum amount of work that could possibly be required nTime after
@@ -1100,10 +1106,10 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
     bnResult.SetCompact(nBase);
     while (nTime > 0 && bnResult < bnProofOfWorkLimit)
     {
-        // Maximum 400% adjustment...
-        bnResult *= 4;
-        // ... in best-case exactly 4-times-normal target time
-        nTime -= nTargetTimespan*4;
+        // Maximum 00% adjustment...
+        bnResult *= 0;
+        // ... in best-case exactly 0-times-normal target time
+        nTime -= nTargetTimespan*0;
     }
     if (bnResult > bnProofOfWorkLimit)
         bnResult = bnProofOfWorkLimit;
